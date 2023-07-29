@@ -1,29 +1,89 @@
 <script lang="ts">
-	let text = `def greet(name):\n\tprint(f"Hello, {name}!")\n\ngreet("John")`;
+	import keySound from '$lib/assets/key-sound3.mp3';
+	import { onMount } from 'svelte';
+	type Sample = {
+		text: string;
+		preview: string;
+	};
+	const samples: { [key: string]: Sample } = {
+		'hello-world': {
+			text: `<h1>Hello, World!</h1>`,
+			preview:
+				`<!DOCTYPE html>
+    <html>
+    <head>
+      <title>Page Title</title>
+      <style>
+      </style>
+      <script>
+      </scr` +
+				`ipt>
+    </head>
+    <body>
+      <!-- Page content goes here -->
+    </body>
+    </html>`
+		},
+		'blue-background': {
+			text: `body {\n\tbackground-color: blue;\n}`,
+			preview:
+				`<!DOCTYPE html>
+    <html>
+    <head>
+      <title>Page Title</title>
+      <style>
+		/* CSS styles go here */
+	</style>
+      <script>
+      </scr` +
+				`ipt>
+    </head>
+    <body>
+      <h1>BLUE BACKGROUND!</h1>
+    </body>
+    </html>`
+		}
+	};
+
+	let currentSample = 'blue-background';
+	let text = samples[currentSample].text;
 	let index = 0;
 	let chars = text.split('');
 	let startTime: Date | null = null;
 	let correctChars = 0;
 	let totalChars = 0;
 
-	function checkInput(event: KeyboardEvent) {
-		if (event.key === text[index] || (event.key === 'Enter' && text[index] === '\n')) {
-			if (startTime === null) {
-				startTime = new Date();
-				totalChars = 0;
-			}
-			index++;
-			correctChars++;
-			while (text[index] === '\t') {
-				index++;
-			}
-		}
-		totalChars++;
-	}
+	onMount(() => {
+		const audioTune = new Audio(keySound);
+		const preview = document.getElementById('preview') as HTMLIFrameElement;
 
-	if (typeof window !== 'undefined') {
+		function checkInput(event: KeyboardEvent) {
+			if (event.key === text[index] || (event.key === 'Enter' && text[index] === '\n')) {
+				if (startTime === null) {
+					startTime = new Date();
+					totalChars = 0;
+				}
+				audioTune.play();
+				index++;
+				correctChars++;
+				while (text[index] === '\t') {
+					index++;
+				}
+			}
+			totalChars++;
+			updatePreview(text.slice(0, index));
+		}
+
 		window.addEventListener('keypress', checkInput);
-	}
+
+		function updatePreview(code: string) {
+			let previewCode = samples[currentSample].preview.replace(
+				/(<!-- Page content goes here -->|\/\* CSS styles go here \*\/|\/\/ JavaScript code goes here)/,
+				code
+			);
+			preview.srcdoc = previewCode;
+		}
+	});
 
 	$: wpm = calculateWPM(totalChars);
 	$: accuracy = calculateAccuracy(totalChars);
@@ -73,7 +133,9 @@
 			</div>
 		</div>
 	</section>
-	<section class="w-96 border-l border-gray-700" />
+	<section class="w-96 border-l border-gray-700 flex justify-center items-center">
+		<iframe id="preview" />
+	</section>
 </div>
 
 <style>
