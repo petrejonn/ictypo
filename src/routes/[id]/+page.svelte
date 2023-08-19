@@ -1,52 +1,13 @@
 <script lang="ts">
 	import keySound from '$lib/assets/key-sound3.mp3';
+	import { Modal } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
-	type Sample = {
-		text: string;
-		preview: string;
-	};
-	const samples: { [key: string]: Sample } = {
-		'hello-world': {
-			text: `<h1>Hello, World!</h1>`,
-			preview:
-				`<!DOCTYPE html>
-    <html>
-    <head>
-      <title>Page Title</title>
-      <style>
-      </style>
-      <script>
-      </scr` +
-				`ipt>
-    </head>
-    <body>
-      <!-- Page content goes here -->
-    </body>
-    </html>`
-		},
-		'blue-background': {
-			text: `body {\n\tbackground-color: blue;\n}`,
-			preview:
-				`<!DOCTYPE html>
-    <html>
-    <head>
-      <title>Page Title</title>
-      <style>
-		/* CSS styles go here */
-	</style>
-      <script>
-      </scr` +
-				`ipt>
-    </head>
-    <body>
-      <h1>BLUE BACKGROUND!</h1>
-    </body>
-    </html>`
-		}
-	};
+	export let data;
 
-	let currentSample = 'blue-background';
-	let text = samples[currentSample].text;
+	let completionModal = false;
+	let practiceCompleted = false;
+	let currentSample = data.code_sample;
+	let text = currentSample?.data ?? ``;
 	let index = 0;
 	let chars = text.split('');
 	let startTime: Date | null = null;
@@ -58,26 +19,48 @@
 		const preview = document.getElementById('preview') as HTMLIFrameElement;
 
 		function checkInput(event: KeyboardEvent) {
-			if (event.key === text[index] || (event.key === 'Enter' && text[index] === '\n')) {
+			if (
+				!practiceCompleted &&
+				(event.key === text[index] ||
+					(event.key === 'Enter' && (text[index] === '\n' || text[index] === '\r')))
+			) {
 				if (startTime === null) {
 					startTime = new Date();
 					totalChars = 0;
 				}
 				audioTune.play();
 				index++;
+				let nextChar = document.querySelector('.next');
+				if (nextChar) {
+					nextChar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				}
+
+				if (text[index] === '\r') {
+					index++;
+				}
 				correctChars++;
 				while (text[index] === '\t') {
 					index++;
 				}
+
+				if (text[index] === ' ' && text[index + 1] === ' ') {
+					while (text[index] === ' ') {
+						index++;
+					}
+				}
 			}
 			totalChars++;
 			updatePreview(text.slice(0, index));
+			if (index >= text.length) {
+				completionModal = true;
+				practiceCompleted = true;
+			}
 		}
 
 		window.addEventListener('keypress', checkInput);
 
 		function updatePreview(code: string) {
-			let previewCode = samples[currentSample].preview.replace(
+			let previewCode = currentSample.preview.replace(
 				/(<!-- Page content goes here -->|\/\* CSS styles go here \*\/|\/\/ JavaScript code goes here)/,
 				code
 			);
@@ -110,15 +93,16 @@
 </script>
 
 <div class="flex h-full">
-	<section class="flex-1 p-5">
+	<section class="flex-1">
 		<div class="min-h-0 flex flex-col h-full">
-			<div class="h-24 text-white">
+			<div class="h-24 text-white p-5">
 				<p>Speed: {wpm} WPM</p>
 				<p>Accuracy: {accuracy}%</p>
 			</div>
-			<div class="p-4 border-2 border-sky-400/20 bg-black min-h-0 h-full">
+			<div class="border-t p-1 border-gray-700 bg-gray-900 min-h-0 h-full">
+				<!-- TODO: hight of p should fit parent -->
 				<p
-					class="overflow-hidden text-green-400 font-mono font-sefonfonbmibold break-words w-[770px] whitespace-pre"
+					class="h-full p-4 overflow-hidden text-green-400 font-mono font-sefonfonbmibold break-words w-[700px] min-w-full whitespace-pre"
 				>
 					{#each chars as char, i}
 						{#if i < index}
@@ -133,9 +117,21 @@
 			</div>
 		</div>
 	</section>
-	<section class="w-96 border-l border-gray-700 flex justify-center items-center">
-		<iframe id="preview" />
+	<section class="w-[470px] border-l border-gray-700">
+		<iframe id="preview" title={currentSample.title} class="w-full h-full mx-auto" />
 	</section>
+	<Modal
+		bind:open={completionModal}
+		size="xs"
+		defaultClass="bg-slate-900 border-gray-700 border"
+		autoclose
+	>
+		<div class="p-6 text-center">
+			<p>🎉🎊🎉🎊</p>
+			<h3 class="mb-5 text-lg font-normal text-green-500">Congratulation?</h3>
+			<p class="text-white">Your typeing speed was {wpm} with an accuracy of {accuracy}</p>
+		</div>
+	</Modal>
 </div>
 
 <style>
