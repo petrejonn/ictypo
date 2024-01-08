@@ -9,7 +9,11 @@
 	let currentSample = data.code_sample;
 	let text = currentSample?.data ?? ``;
 	let index = 0;
-	let chars = text.split('');
+	let chars = text.split('').map((char: String) => {
+		if (char === '\n') return '⏎\n';
+		if (char === '\r') return '⏎\n';
+		return char;
+	});
 	let startTime: Date | null = null;
 	let correctChars = 0;
 	let totalChars = 0;
@@ -63,6 +67,7 @@
 			let previewCode = currentSample.preview.replace(
 				/(<!-- Page content goes here -->|\/\* CSS styles go here \*\/|\/\/ JavaScript code goes here)/,
 				code
+				// currentSample.data
 			);
 			preview.srcdoc = previewCode;
 		}
