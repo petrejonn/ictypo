@@ -48,9 +48,9 @@
 				>
 				HTML
 			</div>
-			<div class="overflow-hidden flex gap-4 flex-wrap">
+			<div class="overflow-hidden flex h-full flex-wrap">
 				{#each html_sample as sample}
-					<a href="/{sample.id}" class="w-1/4">
+					<a href="/{sample.id}" class="w-1/4 p-2 h-36">
 						<img src={sample.output_url} alt="" />
 					</a>
 				{/each}
@@ -94,9 +94,9 @@
 				</svg>
 				Script
 			</div>
-			<div class="overflow-hidden flex gap-4 flex-wrap">
+			<div class="overflow-hidden flex flex-wrap h-full">
 				{#each script_sample as sample}
-					<a href="/{sample.id}" class="w-1/4">
+					<a href="/{sample.id}" class="w-1/4 p-2 h-36">
 						<img src={sample.output_url} alt="" />
 					</a>
 				{/each}
