@@ -70,7 +70,7 @@
 				>
 				CSS
 			</div>
-			<div class="overflow-hidden flex gap-4 flex-wrap h-60">
+			<div class="overflow-hidden flex flex-wrap h-full">
 				{#each css_sample as sample}
 					<a href="/{sample.id}" class="w-1/4">
 						<img src={sample.output_url} alt="" />
