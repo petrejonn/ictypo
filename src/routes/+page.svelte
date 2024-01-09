@@ -72,7 +72,7 @@
 			</div>
 			<div class="overflow-hidden flex flex-wrap h-full">
 				{#each css_sample as sample}
-					<a href="/{sample.id}" class="w-1/4">
+					<a href="/{sample.id}" class="w-1/4 p-2 h-36">
 						<img src={sample.output_url} alt="" />
 					</a>
 				{/each}
