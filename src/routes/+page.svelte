@@ -30,7 +30,7 @@
 	);
 </script>
 
-<div class="h-full">
+<div class="h-full border-t border-gray-700">
 	<Tabs style="underline" contentClass="bg-slate-900">
 		<TabItem open>
 			<div slot="title" class="flex items-center gap-2">
@@ -70,7 +70,7 @@
 				>
 				CSS
 			</div>
-			<div class="overflow-hidden flex flex-wrap h-full">
+			<div class="overflow-hidden flex flex-wrap">
 				{#each css_sample as sample}
 					<a href="/{sample.id}" class="w-1/4 p-2 h-36">
 						<img src={sample.output_url} alt="" />
