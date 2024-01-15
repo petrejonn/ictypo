@@ -2,25 +2,30 @@
 	import '../app.css';
 </script>
 
-<main class="bg-slate-900 h-screen">
-	<section class="w-full h-1/5 border-b border-gray-700" />
-	<section class="flex h-4/5">
-		<section class="w-44 border-r border-gray-700" />
-		<section class="flex-1">
+<main class="bg-slate-900 min-w-[708px] w-full h-full">
+	<section class="w-full h-1/5" />
+	<section class="flex w-full h-4/5">
+		<section class="w-44 hidden xl:block border-r border-gray-700 border-t" />
+		<section class="flex-1 h-full">
 			<slot />
 		</section>
 		<!-- <section class="border-l border-gray-700 w-36" /> -->
-		<aside class="border-l border-gray-700 w-36 transition-transform">
-			<div class="h-full py-5">
-				<a href="https://flowbite.com/" class="flex items-center pl-2.5 mb-10">
+		<aside
+			class="border-l border-gray-700 w-0 lg:w-[5%] xl:w-36 hidden lg:block transition-transform"
+		>
+			<div class="w-full">
+				<a href="/" class="flex justify-center items-center pl-2.5 h-16 border-b border-gray-700">
 					<img
 						src="https://flowbite.com/docs/images/logo.svg"
 						class="h-6 mr-3 sm:h-7"
-						alt="Flowbite Logo"
+						alt="Site Logo"
 					/>
-					<span class="self-center text-lg font-semibold whitespace-nowrap text-white">ICTypo</span>
+					<span
+						class="self-center hidden xl:block text-lg font-semibold whitespace-nowrap text-white"
+						>ICTypo</span
+					>
 				</a>
-				<ul class="space-y-2">
+				<ul class="space-y-2 justify-center flex">
 					<li>
 						<a
 							href="/"
@@ -41,7 +46,7 @@
 								/>
 							</svg>
 
-							<span class="ml-3">Practice</span>
+							<span class="ml-3 hidden xl:block">Practice</span>
 						</a>
 					</li>
 				</ul>

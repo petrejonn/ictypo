@@ -9,7 +9,6 @@ export async function load({ params }) {
 	if (error) {
 		console.error(error);
 	}
-	console.log(data);
 	return {
 		code_sample: data
 	};

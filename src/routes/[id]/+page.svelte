@@ -1,5 +1,5 @@
 <script lang="ts">
-	import keySound from '$lib/assets/key-sound3.mp3';
+	import keySound from '$lib/assets/key-sound6.wav';
 	import { Modal } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	export let data;
@@ -97,17 +97,12 @@
 	}
 </script>
 
-<div class="flex h-full">
-	<section class="flex-1">
-		<div class="min-h-0 flex flex-col h-full">
-			<div class="h-24 text-white p-5">
-				<p>Speed: {wpm} WPM</p>
-				<p>Accuracy: {accuracy}%</p>
-			</div>
-			<div class="border-t p-1 border-gray-700 bg-gray-900 min-h-0 h-full">
-				<!-- TODO: hight of p should fit parent -->
+<div class="flex lg:h-full overflow-clip flex-wrap lg:flex-nowrap">
+	<section class="flex-1 h-full border-t border-gray-700">
+		<div class="flex flex-col h-full">
+			<div class="p-1 border-gray-700 bg-gray-900 h-full">
 				<p
-					class="h-full p-4 overflow-hidden text-green-400 font-mono font-sefonfonbmibold break-words w-[700px] min-w-full whitespace-pre"
+					class="p-4 text-wrap text-green-400 font-mono font-sefonfonbmibold break-words w-full lg:w-[680px] xl:w-[700px] min-w-full whitespace-pre"
 				>
 					{#each chars as char, i}
 						{#if i < index}
@@ -122,7 +117,15 @@
 			</div>
 		</div>
 	</section>
-	<section class="w-[470px] border-l border-gray-700">
+	<section class="w-full lg:w-[450px] xl:w-[470px] border-l border-gray-700">
+		<div class="flex">
+			<div class="flex-1 h-16 text-white px-5 pt-1 border-t border-gray-700">
+				<p>Speed: {wpm} WPM</p>
+				<p>Accuracy: {accuracy}%</p>
+			</div>
+			<div class="flex-1 border-t border-b border-gray-700" />
+			<div class="flex-1 border-b border-gray-700" />
+		</div>
 		<iframe id="preview" title={currentSample.title} class="w-full h-full mx-auto" />
 	</section>
 	<Modal
