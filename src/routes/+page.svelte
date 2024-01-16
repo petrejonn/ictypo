@@ -48,7 +48,7 @@
 				>
 				HTML
 			</div>
-			<div class="overflow-hidden flex h-full flex-wrap">
+			<div class="overflow-hidden flex flex-wrap">
 				{#each html_sample as sample}
 					<a href="/{sample.id}" class="w-1/4 p-2 h-36">
 						<img src={sample.output_url} alt="" />
@@ -94,7 +94,7 @@
 				</svg>
 				Script
 			</div>
-			<div class="overflow-hidden flex flex-wrap h-full">
+			<div class="overflow-hidden flex flex-wrap">
 				{#each script_sample as sample}
 					<a href="/{sample.id}" class="w-1/4 p-2 h-36">
 						<img src={sample.output_url} alt="" />
